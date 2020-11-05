@@ -265,11 +265,13 @@ $(document).ready(function(){
     }
     $('#contact_number').val(html.data.contact_number);
     $('#email').val(html.data.email);
-    //$('#hobbies').prop('selected', false);
+    
     var data2 = html.data.hobbies;
+    $('#hobbies').val(data2.split(','));
+    /*
     data2.split(',').forEach(function(item) {
       $('#hobbies').find("option[value='"+item.trim()+"']").attr("selected",true);
-    }); 
+    });*/ 
     $('#store_image').html("<img src={{ URL::to('/') }}/images/" + html.data.image + " width='70' class='img-thumbnail' />");
     $('#store_image').append("<input type='hidden' name='hidden_image' value='"+html.data.image+"' />");
     $('#hidden_id').val(html.data.id);

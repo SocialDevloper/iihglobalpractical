@@ -15,6 +15,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+        // only get Playing Hobbies employee using scope
+        //dd(Employee::Playing()->get());
         if(request()->ajax())
         {
             return datatables()->of(Employee::latest()->get())
@@ -75,7 +77,7 @@ class EmployeeController extends Controller
             'contact_number' => $request->contact_number,
             'email' => $request->email,
             'image' => $new_name,
-            'hobbies' => implode(", ", $request->hobbies),
+            'hobbies' => implode(",", $request->hobbies),
         );
 
         $employee = Employee::create($form_data);
@@ -161,12 +163,14 @@ class EmployeeController extends Controller
             'contact_number' => $request->contact_number,
             'email' => $request->email,
             'image' => $image_name,
-            'hobbies' => implode(", ", $request->hobbies),
+            'hobbies' => implode(",", $request->hobbies),
         );
-        //$editEmployee = Employee::find($request->hidden_id);
-        //$editEmployee->parents()->detach();
+        $editEmployee = Employee::find($request->hidden_id);
+        $editEmployee->parents()->detach();
+
+        $editEmployee->parents()->attach($request->parent_id, ['created_at'=>now(), 'updated_at'=>now()]);
+        
         $employee = Employee::whereId($request->hidden_id)->update($form_data);
-        //$employee->parents()->attach($request->parent_id, ['created_at'=>now(), 'updated_at'=>now()]);
 
         return response()->json(['success' => 'Data is successfully updated']);
     }

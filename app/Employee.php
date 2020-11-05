@@ -17,4 +17,10 @@ class Employee extends Model
     public function children(){
     	return $this->belongsToMany(Employee::class, 'employee_parent', 'employee_id', 'parent_id');
     }
+
+    // only return playing hobby employee (Local Scope)
+    public function scopePlaying($query)
+    {
+        return $query->whereRaw("FIND_IN_SET('Playing',hobbies)");
+    }
 }
